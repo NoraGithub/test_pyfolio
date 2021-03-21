@@ -1627,7 +1627,8 @@ def plot_txn_time_hist(transactions, bin_minutes=5, tz='America/New_York',
 
     txn_time = transactions.copy()
 
-    txn_time.index = txn_time.index.tz_convert(pytz.timezone(tz))
+    # txn_time.index = txn_time.index.tz_convert(pytz.timezone(tz))
+    txn_time.index = txn_time.index.tz_localize(pytz.timezone('Asia/Shanghai'))
     txn_time.index = txn_time.index.map(lambda x: x.hour * 60 + x.minute)
     txn_time['trade_value'] = (txn_time.amount * txn_time.price).abs()
     txn_time = txn_time.groupby(level=0).sum().reindex(index=range(570, 961))
@@ -1643,9 +1644,10 @@ def plot_txn_time_hist(transactions, bin_minutes=5, tz='America/New_York',
 
     ax.bar(txn_time.index, txn_time.trade_value, width=bin_minutes, **kwargs)
 
-    ax.set_xlim(570, 960)
+    ax.set_xlim(0, 1440)
+    # ax.set_xlim(570, 960)
     ax.set_xticks(txn_time.index[::int(30 / bin_minutes)])
-    ax.set_xticklabels(txn_time.time_str[::int(30 / bin_minutes)])
+    ax.set_xticklabels(txn_time.time_str[::int(30 / bin_minutes)],rotation=-60)
     ax.set_title('Transaction time distribution')
     ax.set_ylabel('Proportion')
     ax.set_xlabel('')

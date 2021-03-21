@@ -177,6 +177,7 @@ def create_full_tear_sheet(returns,
     positions = utils.check_intraday(estimate_intraday, returns,
                                      positions, transactions)
 
+
     create_returns_tear_sheet(
         returns,
         positions=positions,
@@ -462,6 +463,7 @@ def create_returns_tear_sheet(returns, positions=None,
 
     if benchmark_rets is not None:
         returns = utils.clip_returns_to_benchmark(returns, benchmark_rets)
+
 
     plotting.show_perf_stats(returns, benchmark_rets,
                              positions=positions,
